@@ -1,0 +1,61 @@
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+Vue.use(VueRouter)
+
+const users = {
+    template: `
+       <div>
+         <h2> users</h2>
+         <router-view ></router-view>
+       </div>
+    `
+}
+
+const user = {
+    template: `
+       <div>
+         <h2> {{$route.params.username}}-{{$route.query.aaa}}</h2>] 
+       </div>
+    `
+}
+const home = { template: `<div>home ÄÚÈÝ</div>` }
+const router = new VueRouter({
+    model: 'history',
+    base: __dirname,
+    routes: [
+        { path: '/', component: home },
+        {
+            path: '/users',
+            component: users,
+            children: [{
+                path: ':username',
+                name: 'user',
+                component: user,
+            }, ]
+        },
+    ]
+
+
+})
+new Vue({
+    router,
+    template: `
+    <div>
+    <h1>µ¼º½</h1>
+    <ul>
+        <li><router-link to='/'>/</router-link></li>
+        <li><router-link to='/first'>first</router-link></li>
+        <ol>
+            <li><router-link :to="{path:'/users/tom',query:{aaa:'bbb'}}" >tom</router-link></li>
+            <li>
+                <router-link to='about' append> apend </router-link>
+            </li>
+            <li>
+                <router-link to='about' exact> apend </router-link>
+            </li>
+        </ol>
+    </ul>
+    <router-view class="ss"></router-view>
+</div>
+    `
+}).$mount('#app')

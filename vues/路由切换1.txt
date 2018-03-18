@@ -1,0 +1,53 @@
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+Vue.use(VueRouter)
+
+const first = { template: `<div>first 内容</div>` }
+const second = { template: `<div>second 内容</div>` }
+const first12 = { template: `<div>first31 内容</div>` }
+const first2 = { template: `<div>first2 内容</div>` }
+const home = { template: `<div>home 内容</div>` }
+const homeom1 = {
+    template: `
+    <div ><router-view class="12"></router-view></div>`
+}
+const router = new VueRouter({
+    mode: 'history',
+    base: __dirname,
+    routes: [
+        { path: '/', component: home },
+        {
+            path: '/first',
+            component: homeom1,
+            children: [{
+                path: '/',
+                component: first,
+            }, {
+                path: 'fisrt1',
+                component: first12,
+            }, {
+                path: 'second2',
+                component: first2,
+            }]
+        },
+        { path: '/second', component: second },
+    ]
+})
+new Vue({
+    router,
+    template: `
+    <div>
+        <h1>导航</h1>
+        <ul>
+            <li><router-link to='/'>/</router-link></li>
+            <li><router-link to='/first'>first</router-link></li>
+            <ol>
+                <li><router-link to='/first/fisrt1'>first1</router-link></li>
+                <li><router-link to='/first/second2'>first2</router-link></li>
+            </ol>
+            <li><router-link to='/second'>second</router-link></li>
+        </ul>
+        <router-view class="ss"></router-view>
+    </div>
+    `
+}).$mount('#app')

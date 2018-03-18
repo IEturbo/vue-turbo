@@ -1,0 +1,68 @@
+第一种：
+直接通过name传递
+{ path: '/', name: 'home', component: home },
+<p>{{$route.name}}</p>
+
+第二种：
+通过路由绑定的to的参数传递params
+<li><router-link :to="{name:'fisrt1',params:{id:123}}">first1</router-link></li>
+const first1 = { template: `<div>first1{{$route.params.id}} 内容</div>` }
+
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+Vue.use(VueRouter)
+
+const first = { template: `<div>first 内容</div>` }
+const second = { template: `<div>second 内容</div>` }
+const first1 = { template: `<div>first1{{$route.params.id}} 内容</div>` }
+const first2 = { template: `<div>first2{{$route.params.cusid}} 内容</div>` }
+const home = { template: `<div>home 内容</div>` }
+const homeom1 = {
+    template: `
+    <div ><h3>组件</h3><router-view class="12"></router-view></div>`
+}
+const router = new VueRouter({
+    mode: 'history',
+    base: __dirname,
+    routes: [
+        { path: '/', name: 'home', component: home },
+        {
+            path: '/first',
+            name: 'home',
+            component: homeom1,
+            children: [{
+                path: '/',
+                name: 'fisrt',
+                component: first,
+            }, {
+                path: 'fisrt1',
+                name: 'fisrt1',
+                component: first1,
+            }, {
+                path: 'second2',
+                name: 'second2',
+                component: first2,
+            }]
+        },
+        { path: '/second', name: 'second', component: second },
+    ]
+})
+new Vue({
+    router,
+    template: `
+    <div>
+        <h1>导航</h1>
+        <p>{{$route.name}}</p>
+        <ul>
+            <li><router-link to='/'>/</router-link></li>
+            <li><router-link to='/first'>first</router-link></li>
+            <ol>
+                <li><router-link :to="{name:'fisrt1',params:{id:123}}">first1</router-link></li>
+                <li><router-link :to="{name:'second2',params:{cusid:666}}">first2</router-link></li>
+            </ol>
+            <li><router-link to='/second'>second</router-link></li>
+        </ul>
+        <router-view class="ss"></router-view>
+    </div>
+    `
+}).$mount('#app')

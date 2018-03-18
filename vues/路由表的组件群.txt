@@ -1,0 +1,56 @@
+注意components是复数
+
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+Vue.use(VueRouter)
+
+const first = { template: `<div>first 内容</div>` }
+const second = { template: `<div>second 内容</div>` }
+const home = { template: `<div>home 内容</div>` }
+const hehe = { template: `<div>hehe 内容</div>` }
+const router = new VueRouter({
+    mode: 'history',
+    base: __dirname,
+    routes: [{
+            path: '/',
+            components: {
+                default: home,
+                left: first,
+                right: second
+            }
+        },
+        {
+            path: '/first',
+            components: {
+                default: home,
+                left: first,
+                right: second
+            }
+        },
+        {
+            path: '/second',
+            components: {
+                default: home,
+                left: first,
+                right: hehe
+            }
+        },
+    ]
+})
+new Vue({
+    router,
+    template: `
+    <div>
+        <h1>导航</h1>
+        <p>{{$route.name}}</p>
+        <ul>
+            <li><router-link to='/'>/</router-link></li>
+            <li><router-link to='/first'>first</router-link></li>           
+            <li><router-link to='/second'>second</router-link></li>
+        </ul>
+        <router-view class="ss"></router-view>
+        <router-view class="ss" name='left' style="float:left;width:50%;background-color:red;height:300px"></router-view>
+        <router-view class="ss" name='right' style="float:right;width:50%;background-color:#455455;height:300px"></router-view>
+    </div>
+    `
+}).$mount('#app')
